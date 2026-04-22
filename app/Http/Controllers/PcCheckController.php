@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/PcCheckController.php
 
 namespace App\Http\Controllers;
 
@@ -45,14 +44,12 @@ class PcCheckController extends Controller
 
         $content = $request->get('software_list');
 
-        // Парсинг списка
         $softwareList = $this->parser->autoParse($content);
 
         if (empty($softwareList)) {
             return back()->with('error', 'Не удалось распознать список ПО. Проверьте формат.');
         }
 
-        // Создание записи проверки
         $pcCheck = PcCheck::create([
             'check_name' => $request->get('check_name'),
             'pc_name' => $request->get('pc_name'),
@@ -64,13 +61,11 @@ class PcCheckController extends Controller
             'version_mismatch_count' => 0
         ]);
 
-        // Проверка каждого ПО
         $legitimate = 0;
         $illegitimate = 0;
         $versionMismatch = 0;
 
         foreach ($softwareList as $software) {
-            // Сравнение с использованием умного поиска
             $comparison = $this->comparisonService->compare(
                 $software['program_name'],
                 $software['version'],
@@ -88,7 +83,6 @@ class PcCheckController extends Controller
                 $illegitimate++;
             }
 
-            // Сохраняем результат
             PcCheckItem::create([
                 'pc_check_id' => $pcCheck->id,
                 'program_name' => $software['program_name'],
@@ -102,7 +96,6 @@ class PcCheckController extends Controller
             ]);
         }
 
-        // Обновление статистики
         $pcCheck->update([
             'legitimate_count' => $legitimate,
             'illegitimate_count' => $illegitimate,

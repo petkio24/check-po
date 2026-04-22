@@ -1,5 +1,4 @@
 <?php
-// app/Services/ConsoleListParserService.php
 
 namespace App\Services;
 
@@ -17,7 +16,6 @@ class ConsoleListParserService
             $line = trim($line);
             if (empty($line)) continue;
 
-            // Пропускаем служебные строки
             $skipPatterns = [
                 '/^Name/i', '/^Version/i', '/^---/', '/^===/',
                 '/^DisplayName/i', '/^DisplayVersion/i', '/^ProductName/i',
@@ -34,7 +32,6 @@ class ConsoleListParserService
 
             if ($shouldSkip) continue;
 
-            // Разбираем строку
             $parsed = $this->parseLine($line);
             if ($parsed && !empty($parsed['name'])) {
                 $softwareList[] = [
@@ -53,7 +50,6 @@ class ConsoleListParserService
      */
     private function parseLine($line)
     {
-        // Способ 1: через табуляцию
         if (strpos($line, "\t") !== false) {
             $parts = explode("\t", $line);
             $parts = array_filter($parts, fn($p) => trim($p) !== '');
@@ -67,7 +63,6 @@ class ConsoleListParserService
             }
         }
 
-        // Способ 2: через 2 и более пробелов
         if (preg_match('/^(.+?)\s{2,}(.+?)$/', $line, $matches)) {
             return [
                 'name' => trim($matches[1]),
@@ -75,7 +70,6 @@ class ConsoleListParserService
             ];
         }
 
-        // Способ 3: через дефис с пробелами
         if (strpos($line, ' - ') !== false) {
             $parts = explode(' - ', $line, 2);
             return [
@@ -84,7 +78,6 @@ class ConsoleListParserService
             ];
         }
 
-        // Способ 4: версия в конце через пробел (версия похожа на числа с точками)
         if (preg_match('/^(.+?)\s+([\d\.]+(?:\s*\([^)]+\))?(?:\s+[\d\.]+)*)$/', $line, $matches)) {
             return [
                 'name' => trim($matches[1]),
@@ -92,7 +85,6 @@ class ConsoleListParserService
             ];
         }
 
-        // Способ 5: версия в конце через пробел (версия начинается с буквы v)
         if (preg_match('/^(.+?)\s+(v[\d\.]+.*)$/i', $line, $matches)) {
             return [
                 'name' => trim($matches[1]),
@@ -100,7 +92,6 @@ class ConsoleListParserService
             ];
         }
 
-        // Способ 6: только название
         if (!empty($line) && strlen($line) < 100) {
             return [
                 'name' => trim($line),

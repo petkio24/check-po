@@ -1,4 +1,3 @@
-/* resources/css/rosatom.css - основные переменные и сброс */
 :root {
     --rosatom-blue: #1e3a5f;
     --rosatom-blue-dark: #0f2a45;
@@ -7,18 +6,18 @@
     --rosatom-gray-light: #edf2f7;
     --rosatom-border: rgba(147, 150, 154, 0.56);
     --rosatom-text: #1a202c;
-    --rosatom-text-light: #718096;
+    --rosatom-text-light: #718096
 }
 
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box
 }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     background-color: #f7fafc;
     color: var(--rosatom-text);
-    line-height: 1.5;
+    line-height: 1.5
 }

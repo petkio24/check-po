@@ -1,5 +1,4 @@
 <?php
-// app/Services/SoftwareComparisonService.php
 
 namespace App\Services;
 
@@ -12,10 +11,8 @@ class SoftwareComparisonService
      */
     public function compare($programName, $version = null, $vendor = null)
     {
-        // Очищаем название
         $programName = trim($programName);
 
-        // Если название пустое - возвращаем нелегальное
         if (empty($programName)) {
             return [
                 'status' => 'illegitimate',
@@ -26,11 +23,9 @@ class SoftwareComparisonService
             ];
         }
 
-        // Используем умный поиск
         $searchResult = AllowedSoftware::smartSearch($programName, $version);
         $matches = $searchResult['matches'];
 
-        // Логируем результат поиска
         \Log::info('Compare result', [
             'program' => $programName,
             'version' => $version,
@@ -38,7 +33,6 @@ class SoftwareComparisonService
             'matches' => $matches->map(fn($m) => $m->name . ' ' . $m->version)->toArray()
         ]);
 
-        // Если совпадений нет - нелегальное ПО
         if ($matches->isEmpty()) {
             return [
                 'status' => 'illegitimate',
@@ -51,11 +45,9 @@ class SoftwareComparisonService
             ];
         }
 
-        // Получаем версию для сравнения
         $searchVersion = $version ?: $searchResult['extracted_version'];
         $normalizedSearchVersion = !empty($searchVersion) ? AllowedSoftware::normalizeVersion($searchVersion) : null;
 
-        // Перебираем все совпадения
         $exactMatch = null;
         $versionMismatchMatch = null;
         $anyMatch = null;
@@ -63,35 +55,28 @@ class SoftwareComparisonService
         foreach ($matches as $match) {
             $matchVersionNorm = $match->version_normalized;
 
-            // Сохраняем первый матч как любой
             if (!$anyMatch) {
                 $anyMatch = $match;
             }
 
-            // Если у проверяемого ПО нет версии
             if (empty($normalizedSearchVersion) || $normalizedSearchVersion === '0.0.0.0') {
-                // Если у разрешённого ПО нет версии - разрешено
                 if (empty($matchVersionNorm) || $matchVersionNorm === '0.0.0.0') {
                     $exactMatch = $match;
                     break;
                 }
-                // Если версия указана в разрешённом - пропускаем
                 continue;
             }
 
-            // Сравниваем версии
             if ($matchVersionNorm === $normalizedSearchVersion) {
                 $exactMatch = $match;
                 break;
             }
 
-            // Сохраняем как несовпадение версии
             if (!$versionMismatchMatch && !empty($matchVersionNorm) && $matchVersionNorm !== '0.0.0.0') {
                 $versionMismatchMatch = $match;
             }
         }
 
-        // Точное совпадение (название + версия)
         if ($exactMatch) {
             return [
                 'status' => 'legitimate',
@@ -105,7 +90,6 @@ class SoftwareComparisonService
             ];
         }
 
-        // Несовпадение версии
         if ($versionMismatchMatch) {
             return [
                 'status' => 'version_mismatch',
@@ -120,7 +104,6 @@ class SoftwareComparisonService
             ];
         }
 
-        // Совпадение только по названию (без версии)
         if ($anyMatch) {
             return [
                 'status' => 'legitimate',

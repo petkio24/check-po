@@ -1,4 +1,3 @@
-{{-- resources/views/allowed-software/index.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Реестр ПО')

@@ -1,4 +1,3 @@
-{{-- resources/views/allowed-software/edit.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Редактировать ПО')

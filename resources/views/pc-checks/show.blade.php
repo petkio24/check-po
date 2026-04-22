@@ -1,4 +1,3 @@
-{{-- resources/views/pc-checks/show.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Результат проверки ПК')

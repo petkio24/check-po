@@ -1,5 +1,4 @@
 <?php
-// app/Models/AllowedSoftware.php
 
 namespace App\Models;
 
@@ -20,17 +19,14 @@ class AllowedSoftware extends Model
         'is_active' => 'boolean'
     ];
 
-    // Нормализация названия программы
     public static function normalizeName($name)
     {
         $name = mb_strtolower(trim($name));
 
-        // Удаляем версию из названия (если есть)
         $name = preg_replace('/\s+[\d\.]+.*$/', '', $name);
         $name = preg_replace('/\s+v\d+.*$/i', '', $name);
         $name = preg_replace('/\s+version\s+[\d\.]+.*$/i', '', $name);
 
-        // Удаляем распространённые суффиксы
         $suffixes = [
             ' x64', ' x86', ' 64-bit', ' 32-bit', ' (x64)', ' (x86)',
             ' for windows', ' for mac', ' for linux', ' для windows',
@@ -47,7 +43,6 @@ class AllowedSoftware extends Model
         return $name;
     }
 
-    // Извлечение версии из названия программы
     public static function extractVersionFromName($name)
     {
         $patterns = [
@@ -69,7 +64,6 @@ class AllowedSoftware extends Model
         return null;
     }
 
-    // Умное разделение названия и версии
     public static function splitNameAndVersion($fullName)
     {
         $version = self::extractVersionFromName($fullName);
@@ -91,7 +85,6 @@ class AllowedSoftware extends Model
         ];
     }
 
-    // Парсинг версии на компоненты
     public static function parseVersion($version)
     {
         if (empty($version) || $version === '-') {
@@ -110,7 +103,6 @@ class AllowedSoftware extends Model
         ];
     }
 
-    // Нормализация версии для сравнения
     public static function normalizeVersion($version)
     {
         $parts = self::parseVersion($version);
@@ -122,21 +114,16 @@ class AllowedSoftware extends Model
      */
     public static function smartSearch($programName, $version = null)
     {
-        // Очищаем название от мусора
         $cleanProgramName = trim($programName);
 
-        // Разделяем название и версию из названия
         $split = self::splitNameAndVersion($cleanProgramName);
         $cleanName = $split['name'];
         $extractedVersion = $split['version'];
 
-        // Используем переданную версию или извлечённую
         $searchVersion = $version ?: $extractedVersion;
 
-        // Нормализуем название для поиска
         $normalizedName = self::normalizeName($cleanName);
 
-        // Логируем поиск (для отладки)
         \Log::info('Smart search', [
             'original' => $programName,
             'clean_name' => $cleanName,
@@ -144,19 +131,16 @@ class AllowedSoftware extends Model
             'version' => $searchVersion
         ]);
 
-        // Поиск по точному совпадению нормализованного названия
         $results = self::where('is_active', true)
             ->where('normalized_name', $normalizedName)
             ->get();
 
-        // Если ничего не найдено - поиск по частичному совпадению
         if ($results->isEmpty()) {
             $results = self::where('is_active', true)
                 ->where('normalized_name', 'like', '%' . $normalizedName . '%')
                 ->get();
         }
 
-        // Если всё ещё ничего не найдено - поиск по имени без нормализации
         if ($results->isEmpty()) {
             $results = self::where('is_active', true)
                 ->where('name', 'like', '%' . $cleanName . '%')

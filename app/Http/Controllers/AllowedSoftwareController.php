@@ -1,5 +1,4 @@
 <?php
-// app/Http/Controllers/AllowedSoftwareController.php
 
 namespace App\Http\Controllers;
 
@@ -48,22 +47,18 @@ class AllowedSoftwareController extends Controller
             'notes' => 'nullable|string'
         ]);
 
-        // Умная обработка названия и версии
         $split = AllowedSoftware::splitNameAndVersion($validated['name']);
 
-        // Если версия не указана отдельно, но есть в названии
         if (empty($validated['version']) && $split['version']) {
             $validated['version'] = $split['version'];
             $validated['name'] = $split['name'];
         }
 
-        // Нормализация для поиска
         $validated['normalized_name'] = AllowedSoftware::normalizeName($validated['name']);
         $validated['version_normalized'] = AllowedSoftware::normalizeVersion($validated['version'] ?? '');
         $validated['version_parts'] = AllowedSoftware::parseVersion($validated['version'] ?? '');
         $validated['is_active'] = $request->has('is_active');
 
-        // Проверка на дубликат
         $exists = AllowedSoftware::where('normalized_name', $validated['normalized_name'])
             ->where('version_normalized', $validated['version_normalized'])
             ->exists();
@@ -101,7 +96,6 @@ class AllowedSoftwareController extends Controller
             'notes' => 'nullable|string'
         ]);
 
-        // Умная обработка названия и версии
         $split = AllowedSoftware::splitNameAndVersion($validated['name']);
 
         if (empty($validated['version']) && $split['version']) {
@@ -212,7 +206,6 @@ class AllowedSoftwareController extends Controller
             $line = trim($line);
             if (empty($line)) continue;
 
-            // Парсим строку
             $parts = preg_split('/[\t,;]+/', $line);
             $name = $parts[0] ?? '';
             $version = $parts[1] ?? '';
@@ -220,7 +213,6 @@ class AllowedSoftwareController extends Controller
 
             if (empty($name)) continue;
 
-            // Умная обработка
             $split = AllowedSoftware::splitNameAndVersion($name);
             if (empty($version) && $split['version']) {
                 $version = $split['version'];
@@ -230,7 +222,6 @@ class AllowedSoftwareController extends Controller
             $normalizedName = AllowedSoftware::normalizeName($name);
             $normalizedVersion = AllowedSoftware::normalizeVersion($version);
 
-            // Проверяем существование
             $exists = AllowedSoftware::where('normalized_name', $normalizedName)
                 ->where('version_normalized', $normalizedVersion)
                 ->exists();

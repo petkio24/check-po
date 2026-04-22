@@ -1,5 +1,4 @@
 <?php
-// app/Models/PcCheck.php
 
 namespace App\Models;
 

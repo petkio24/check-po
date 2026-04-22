@@ -1,4 +1,3 @@
-{{-- resources/views/allowed-software/create.blade.php --}}
 @extends('layouts.app')
 
 @section('title', 'Добавить ПО в реестр')
