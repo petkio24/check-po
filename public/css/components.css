@@ -743,3 +743,35 @@
     background: #f7fafc;
     cursor: not-allowed;
 }
+
+.checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    color: var(--rosatom-text);
+}
+
+.checkbox-label input {
+    width: 1rem;
+    height: 1rem;
+    cursor: pointer;
+    accent-color: var(--rosatom-blue);
+}
+
+/* Форма контейнер */
+.form-container {
+    max-width: 800px;
+}
+
+/* is-invalid для ошибок */
+.form-input.is-invalid {
+    border-color: #e53e3e;
+    background-color: #fff5f5;
+}
+
+.form-input.is-invalid:focus {
+    border-color: #e53e3e;
+    box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
