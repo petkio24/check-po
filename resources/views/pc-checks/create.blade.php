@@ -27,54 +27,39 @@
 
                 <div class="form-group">
                     <label class="form-label required">Название проверки</label>
-                    <input type="text" name="check_name" class="form-input @error('check_name') is-invalid @enderror"
-                           value="{{ old('check_name') }}" placeholder="例如: Проверка отдела разработки - 15.04.2026" required>
+                    <input type="text" name="check_name" id="checkName" class="form-input @error('check_name') is-invalid @enderror"
+                           value="{{ old('check_name') }}" required>
                     @error('check_name')
                     <div class="form-error">{{ $message }}</div>
                     @enderror
-                    <div class="form-hint">Укажите понятное название для идентификации проверки</div>
+                    <div class="form-hint">Автоматически заполняется текущей датой, можно отредактировать</div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Имя ПК</label>
-                        <input type="text" name="pc_name" class="form-input" placeholder="WORKSTATION-001">
+                        <input type="text" name="pc_name" class="form-input" value="{{ old('pc_name') }}">
                     </div>
                     <div class="form-group">
                         <label class="form-label">IP-адрес</label>
-                        <input type="text" name="pc_ip" class="form-input" placeholder="192.168.1.100">
+                        <input type="text" name="pc_ip" class="form-input" value="{{ old('pc_ip') }}">
                     </div>
-                </div>
-            </div>
-
-            <div class="form-card">
-                <div class="card-title">Формат списка</div>
-                <div class="format-options">
-                    <label class="radio-label">
-                        <input type="radio" name="format" value="auto" checked>
-                        <span>Автоопределение</span>
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="format" value="table">
-                        <span>Таблица (название    версия)</span>
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="format" value="dash">
-                        <span>С тире (название - версия)</span>
-                    </label>
                 </div>
             </div>
 
             <div class="form-card">
                 <div class="card-title">Список программ</div>
+
+                <div class="info-note">
+                    <div class="info-note-icon">i</div>
+                    <div class="info-note-text">
+                        Формат списка определяется автоматически. Поддерживаются форматы: <strong>Название    Версия</strong> (через пробелы или табуляцию) или <strong>Название - Версия</strong>
+                    </div>
+                </div>
+
                 <textarea name="software_list"
                           id="softwareList"
                           class="form-textarea software-textarea"
-                          placeholder='Вставьте список программ из консоли, например:
-
-7-Zip 23.01
-Google Chrome 120.0.6099.130
-Microsoft Office 16.0.16026.20200'
                           required></textarea>
                 <div class="textarea-hint">
                     <span id="lineCount">0</span> строк распознано
@@ -95,6 +80,15 @@ Microsoft Office 16.0.16026.20200'
 
     @push('scripts')
         <script>
+            // Автозаполнение названия проверки
+            const checkNameInput = document.getElementById('checkName');
+            const today = new Date();
+            const defaultName = `Проверка от ${today.getDate().toString().padStart(2, '0')}.${(today.getMonth() + 1).toString().padStart(2, '0')}.${today.getFullYear()} ${today.getHours().toString().padStart(2, '0')}:${today.getMinutes().toString().padStart(2, '0')}`;
+
+            if (!checkNameInput.value) {
+                checkNameInput.value = defaultName;
+            }
+
             const textarea = document.getElementById('softwareList');
             const lineCountSpan = document.getElementById('lineCount');
             const clearBtn = document.getElementById('clearForm');

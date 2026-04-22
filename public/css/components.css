@@ -685,7 +685,7 @@
 
 .summary-card {
     background: white;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--rosatom-border) !important;
     border-radius: 8px;
     padding: 1rem;
     text-align: center;

@@ -5,7 +5,7 @@
     --rosatom-blue-light: #2c5282;
     --rosatom-gray: #4a5568;
     --rosatom-gray-light: #edf2f7;
-    --rosatom-border: #e2e8f0;
+    --rosatom-border: rgba(147, 150, 154, 0.56);
     --rosatom-text: #1a202c;
     --rosatom-text-light: #718096;
 }

@@ -9,7 +9,6 @@ use App\Models\AllowedSoftware;
 use App\Services\ConsoleListParserService;
 use App\Services\SoftwareComparisonService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PcCheckController extends Controller
 {
@@ -41,21 +40,13 @@ class PcCheckController extends Controller
             'check_name' => 'required|string|max:255',
             'software_list' => 'required|string',
             'pc_name' => 'nullable|string|max:255',
-            'pc_ip' => 'nullable|ip',
-            'format' => 'nullable|in:auto,table,dash'
+            'pc_ip' => 'nullable|ip'
         ]);
 
-        $format = $request->get('format', 'auto');
         $content = $request->get('software_list');
 
-        // Парсинг списка
-        if ($format === 'auto') {
-            $softwareList = $this->parser->autoParse($content);
-        } elseif ($format === 'dash') {
-            $softwareList = $this->parser->parseWithDash($content);
-        } else {
-            $softwareList = $this->parser->parse($content);
-        }
+        // Автоопределение формата
+        $softwareList = $this->parser->autoParse($content);
 
         if (empty($softwareList)) {
             return back()->with('error', 'Не удалось распознать список ПО. Проверьте формат.');
@@ -69,7 +60,7 @@ class PcCheckController extends Controller
             'check_file_name' => 'Ручной ввод',
             'total_software' => count($softwareList),
             'legitimate_count' => 0,
-            'illegitimate_count'  => 0,
+            'illegitimate_count' => 0,
             'version_mismatch_count' => 0
         ]);
 
@@ -77,7 +68,6 @@ class PcCheckController extends Controller
         $legitimate = 0;
         $illegitimate = 0;
         $versionMismatch = 0;
-        $results = [];
 
         foreach ($softwareList as $software) {
             $comparison = $this->comparisonService->compare(
@@ -87,7 +77,6 @@ class PcCheckController extends Controller
             );
 
             $status = $comparison['status'];
-            $matchType = $comparison['match_type'];
             $matchedId = $comparison['match_details']['matched_id'] ?? null;
 
             if ($status === 'legitimate') {
@@ -155,8 +144,9 @@ class PcCheckController extends Controller
     {
         $items = $pcCheck->items()->get();
 
-        $csv = "Программа,Версия,Поставщик,Статус,Детали\n";
+        $headers = ['Программа', 'Версия', 'Производитель', 'Статус', 'Детали'];
 
+        $rows = [];
         foreach ($items as $item) {
             $status = $item->status === 'legitimate' ? 'Разрешено' :
                 ($item->status === 'version_mismatch' ? 'Несовпадение версии' : 'Не разрешено');
@@ -169,20 +159,35 @@ class PcCheckController extends Controller
                 $details = $matchDetails['reason'];
             }
 
-            $csv .= sprintf(
-                "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
-                str_replace('"', '""', $item->program_name),
-                str_replace('"', '""', $item->version),
-                str_replace('"', '""', $item->vendor ?? '-'),
+            $rows[] = [
+                $item->program_name,
+                $item->version ?: '—',
+                $item->vendor ?: '—',
                 $status,
-                str_replace('"', '""', $details)
-            );
+                $details
+            ];
         }
+
+        $output = fopen('php://temp', 'r+');
+        fwrite($output, "\xEF\xBB\xBF");
+        fputcsv($output, $headers, ';', '"', '\\');
+
+        foreach ($rows as $row) {
+            fputcsv($output, $row, ';', '"', '\\');
+        }
+
+        rewind($output);
+        $csv = stream_get_contents($output);
+        fclose($output);
 
         $filename = "pc_check_{$pcCheck->id}_{$pcCheck->created_at->format('Ymd_His')}.csv";
 
-        return response($csv)
-            ->header('Content-Type', 'text/csv; charset=utf-8')
-            ->header('Content-Disposition', "attachment; filename=\"{$filename}\"");
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv; charset=utf-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ]);
     }
 }

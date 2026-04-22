@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <label class="form-label required">Название программы</label>
                     <input type="text" name="name" class="form-input @error('name') is-invalid @enderror"
-                           value="{{ old('name') }}" placeholder="例如: 7-Zip, Adobe Acrobat Reader DC" required>
+                           value="{{ old('name') }}" required>
                     @error('name')
                     <div class="form-error">{{ $message }}</div>
                     @enderror
@@ -37,15 +37,13 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Версия</label>
-                        <input type="text" name="version" class="form-input"
-                               value="{{ old('version') }}" placeholder="例如: 23.01 (x64)">
+                        <input type="text" name="version" class="form-input" value="{{ old('version') }}">
                         <div class="form-hint">Оставьте пустым, если версия не важна</div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">Производитель</label>
-                        <input type="text" name="vendor" class="form-input"
-                               value="{{ old('vendor') }}" placeholder="例如: Igor Pavlov, Adobe Systems">
+                        <input type="text" name="vendor" class="form-input" value="{{ old('vendor') }}">
                     </div>
                 </div>
             </div>
@@ -55,8 +53,7 @@
 
                 <div class="form-group">
                     <label class="form-label">Примечания</label>
-                    <textarea name="notes" class="form-textarea" rows="4"
-                              placeholder="Дополнительная информация о ПО, лицензионные ограничения и т.д.">{{ old('notes') }}</textarea>
+                    <textarea name="notes" class="form-textarea" rows="4">{{ old('notes') }}</textarea>
                 </div>
 
                 <div class="form-group">

@@ -149,7 +149,7 @@
 
 .summary-card {
     background: white;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--rosatom-border);
     border-radius: 8px;
     padding: 1rem;
     text-align: center;
@@ -226,7 +226,7 @@
 
 .results-table-container {
     background: white;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--rosatom-border);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -315,7 +315,7 @@
 
 .check-card {
     background: white;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--rosatom-border);
     border-radius: 8px;
     padding: 1rem;
 }
@@ -413,7 +413,7 @@
 
 .summary-card {
     background: white;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--rosatom-border);
     border-radius: 8px;
     padding: 1rem;
     text-align: center;

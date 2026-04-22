@@ -6,7 +6,6 @@ namespace App\Http\Controllers;
 use App\Models\AllowedSoftware;
 use App\Services\SoftwareComparisonService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class AllowedSoftwareController extends Controller
 {
@@ -40,6 +39,7 @@ class AllowedSoftwareController extends Controller
         $validated['normalized_name'] = AllowedSoftware::normalizeName($validated['name']);
         $validated['version_normalized'] = AllowedSoftware::normalizeVersion($validated['version'] ?? '');
         $validated['version_parts'] = AllowedSoftware::parseVersion($validated['version'] ?? '');
+        $validated['is_active'] = $request->has('is_active');
 
         AllowedSoftware::create($validated);
 
@@ -58,13 +58,13 @@ class AllowedSoftwareController extends Controller
             'name' => 'required|string|max:255',
             'version' => 'nullable|string|max:255',
             'vendor' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
             'notes' => 'nullable|string'
         ]);
 
         $validated['normalized_name'] = AllowedSoftware::normalizeName($validated['name']);
         $validated['version_normalized'] = AllowedSoftware::normalizeVersion($validated['version'] ?? '');
         $validated['version_parts'] = AllowedSoftware::parseVersion($validated['version'] ?? '');
+        $validated['is_active'] = $request->has('is_active');
 
         $allowedSoftware->update($validated);
 
@@ -78,22 +78,6 @@ class AllowedSoftwareController extends Controller
 
         return redirect()->route('allowed-software.index')
             ->with('success', 'ПО удалено из списка');
-    }
-
-    public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:docx,txt|max:10240'
-        ]);
-
-        // Чтение файла
-        $content = file_get_contents($request->file('file')->getPathname());
-
-        // Здесь нужно добавить парсинг DOCX
-        // Для простоты пока используем текстовый парсинг
-
-        return redirect()->route('allowed-software.index')
-            ->with('success', 'Импорт завершён');
     }
 
     public function checkSimilar(Request $request)
