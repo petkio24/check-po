@@ -1,0 +1,684 @@
+/* resources/css/components.css - компоненты */
+.card {
+    background-color: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.card-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--rosatom-border);
+}
+
+.card-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--rosatom-text);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-primary {
+    background-color: var(--rosatom-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--rosatom-blue-dark);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--rosatom-gray);
+    border: 1px solid var(--rosatom-border);
+}
+
+.btn-secondary:hover {
+    background-color: var(--rosatom-gray-light);
+}
+
+.btn-danger {
+    background-color: #dc2626;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #b91c1c;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--rosatom-blue);
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+}
+
+.label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--rosatom-text);
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--rosatom-text-light);
+    border-bottom: 1px solid var(--rosatom-border);
+}
+
+.table td {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--rosatom-border);
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 0.25rem;
+}
+
+.badge-success {
+    background-color: #c6f6d5;
+    color: #22543d;
+}
+
+.badge-warning {
+    background-color: #feebc8;
+    color: #7c2d12;
+}
+
+.badge-danger {
+    background-color: #fed7d7;
+    color: #742a2a;
+}
+
+.badge-neutral {
+    background-color: var(--rosatom-gray-light);
+    color: var(--rosatom-gray);
+}
+
+.alert {
+    padding: 1rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+.alert-success {
+    background-color: #c6f6d5;
+    color: #22543d;
+    border: 1px solid #9ae6b4;
+}
+
+.alert-error {
+    background-color: #fed7d7;
+    color: #742a2a;
+    border: 1px solid #fc8181;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--rosatom-text-light);
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.875rem;
+    font-weight: 300;
+    color: var(--rosatom-text);
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-card {
+    background-color: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+}
+
+.action-card:hover {
+    border-color: var(--rosatom-blue);
+}
+
+.action-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--rosatom-text);
+    margin-bottom: 0.25rem;
+}
+
+.action-description {
+    font-size: 0.75rem;
+    color: var(--rosatom-text-light);
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--rosatom-text);
+    margin-bottom: 0.5rem;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+    outline: none;
+    border-color: var(--rosatom-blue);
+    box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: var(--rosatom-text-light);
+    margin-top: 0.25rem;
+}
+
+.form-error {
+    font-size: 0.75rem;
+    color: #dc2626;
+    margin-top: 0.25rem;
+}
+
+/* Кнопки */
+.button-group {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Пагинация */
+.pagination {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.pagination-item {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--rosatom-text);
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+}
+
+.pagination-item:hover {
+    background-color: var(--rosatom-gray-light);
+}
+
+.pagination-active {
+    background-color: var(--rosatom-blue);
+    color: white;
+    border-color: var(--rosatom-blue);
+}
+
+/* Пустое состояние */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--rosatom-text-light);
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state-text {
+    font-size: 0.875rem;
+}
+
+/* Модальное окно */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background-color: white;
+    border-radius: 0.5rem;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--rosatom-border);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--rosatom-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.filters-panel {
+    background: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.filters-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-input {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+}
+
+.filter-input svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0aec0;
+}
+
+.filter-search {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+.filter-select {
+    padding: 0.5rem 2rem 0.5rem 1rem;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background: white;
+    cursor: pointer;
+}
+
+/* Таблица ПО */
+.software-table-container {
+    background: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.software-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.software-table th {
+    text-align: left;
+    padding: 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #718096;
+    background: #f7fafc;
+    border-bottom: 1px solid var(--rosatom-border);
+}
+
+.software-table td {
+    padding: 1rem;
+    font-size: 0.875rem;
+    border-bottom: 1px solid var(--rosatom-border);
+}
+
+.software-table tr:hover {
+    background: #f7fafc;
+}
+
+.software-name {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 500;
+}
+
+.software-icon {
+    width: 32px;
+    height: 32px;
+    background: #edf2f7;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a5568;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.action-btn.edit:hover {
+    background: #ebf8ff;
+    color: #3182ce;
+}
+
+.action-btn.delete:hover {
+    background: #fff5f5;
+    color: #e53e3e;
+}
+
+.status-badge {
+    display: inline-flex;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    border-radius: 20px;
+}
+
+.status-badge.active {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.status-badge.inactive {
+    background: #edf2f7;
+    color: #4a5568;
+}
+
+/* Страница создания отчёта */
+.report-creation {
+    max-width: 800px;
+}
+
+.info-panel {
+    background: #ebf8ff;
+    border-left: 4px solid #1e3a5f;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.info-icon {
+    font-size: 1.25rem;
+}
+
+.info-content strong {
+    display: block;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: #1e3a5f;
+}
+
+.info-content p {
+    font-size: 0.75rem;
+    color: #4a5568;
+}
+
+.upload-container {
+    margin-bottom: 1.5rem;
+}
+
+.upload-area {
+    border: 2px dashed var(--rosatom-border);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fafbfc;
+}
+
+.upload-area:hover {
+    border-color: #1e3a5f;
+    background: #f7fafc;
+}
+
+.upload-area.drag-over {
+    border-color: #1e3a5f;
+    background: #ebf8ff;
+}
+
+.upload-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.upload-icon svg {
+    stroke: #a0aec0;
+}
+
+.upload-title {
+    font-size: 0.875rem;
+    color: #4a5568;
+}
+
+.upload-hint {
+    font-size: 0.7rem;
+    color: #a0aec0;
+}
+
+.upload-preview {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem;
+    background: #edf2f7;
+    border-radius: 8px;
+}
+
+.preview-icon {
+    font-size: 1.5rem;
+}
+
+.preview-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #2d3748;
+}
+
+.preview-size {
+    font-size: 0.7rem;
+    color: #718096;
+}
+
+.remove-file {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    border: none;
+    cursor: pointer;
+    font-size: 1.25rem;
+    line-height: 1;
+    color: #718096;
+}
+
+.remove-file:hover {
+    background: #cbd5e0;
+}
+
+.analysis-options {
+    background: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.options-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #2d3748;
+}
+
+.options-grid {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.btn-large {
+    padding: 0.625rem 1.5rem;
+    font-size: 0.875rem;
+}

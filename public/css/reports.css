@@ -1,0 +1,119 @@
+/* public/css/reports.css */
+
+/* Страница создания отчёта */
+.upload-area {
+    border: 2px dashed var(--rosatom-border);
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: var(--rosatom-blue);
+    background-color: var(--rosatom-gray-light);
+}
+
+.upload-area.drag-over {
+    border-color: var(--rosatom-blue);
+    background-color: rgba(30, 58, 95, 0.05);
+}
+
+.upload-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.upload-text {
+    font-size: 0.875rem;
+    color: var(--rosatom-text);
+    margin-bottom: 0.5rem;
+}
+
+.upload-hint {
+    font-size: 0.75rem;
+    color: var(--rosatom-text-light);
+}
+
+.file-input {
+    display: none;
+}
+
+/* Детали отчёта */
+.report-summary {
+    margin-bottom: 2rem;
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--rosatom-border);
+}
+
+.report-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--rosatom-text);
+}
+
+.report-date {
+    font-size: 0.75rem;
+    color: var(--rosatom-text-light);
+}
+
+/* Статусы в таблице */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    border-radius: 0.25rem;
+}
+
+.status-legitimate {
+    background-color: #c6f6d5;
+    color: #22543d;
+}
+
+.status-version-mismatch {
+    background-color: #feebc8;
+    color: #7c2d12;
+}
+
+.status-illegitimate {
+    background-color: #fed7d7;
+    color: #742a2a;
+}
+
+/* Экспорт кнопка */
+.export-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Фильтры отчётов */
+.report-filters {
+    background-color: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filter-group {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.filter-field {
+    flex: 1;
+    min-width: 150px;
+}

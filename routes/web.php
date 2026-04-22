@@ -1,22 +1,27 @@
 <?php
+// routes/web.php
 
+use App\Http\Controllers\PcCheckController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+use App\Http\Controllers\AllowedSoftwareController;
+use App\Http\Controllers\ReportController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('dashboard');
 });
 
-Auth::routes();
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('pc-checks', PcCheckController::class);
+Route::get('pc-checks/{pcCheck}/export', [PcCheckController::class, 'export'])->name('pc-checks.export');
+
+// Управление разрешённым ПО
+Route::resource('allowed-software', AllowedSoftwareController::class);
+Route::post('allowed-software/import', [AllowedSoftwareController::class, 'import'])->name('allowed-software.import');
+Route::post('allowed-software/check-similar', [AllowedSoftwareController::class, 'checkSimilar'])->name('allowed-software.check-similar');
+
+// Отчёты
+Route::resource('reports', ReportController::class);
+Route::get('reports/{report}/export', [ReportController::class, 'export'])->name('reports.export');

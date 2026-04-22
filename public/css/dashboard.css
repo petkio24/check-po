@@ -1,0 +1,230 @@
+/* resources/css/dashboard.css - стили для дашборда */
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 300;
+    color: var(--rosatom-text);
+    margin-bottom: 0.25rem;
+}
+
+.page-subtitle {
+    font-size: 0.875rem;
+    color: var(--rosatom-text-light);
+}
+
+.recent-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--rosatom-border);
+}
+
+.recent-item:last-child {
+    border-bottom: none;
+}
+
+.recent-info {
+    flex: 1;
+}
+
+.recent-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--rosatom-text);
+    margin-bottom: 0.25rem;
+}
+
+.recent-meta {
+    font-size: 0.75rem;
+    color: var(--rosatom-text-light);
+}
+
+.recent-stats {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.recent-stat {
+    text-align: center;
+}
+
+.recent-stat-value {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--rosatom-text);
+}
+
+.recent-stat-label {
+    font-size: 0.7rem;
+    color: var(--rosatom-text-light);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--rosatom-text-light);
+}
+
+.section-link {
+    font-size: 0.75rem;
+    color: var(--rosatom-text-light);
+    text-decoration: none;
+}
+
+.section-link:hover {
+    color: var(--rosatom-blue);
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    transition: all 0.2s;
+}
+
+.stat-card:hover {
+    border-color: var(--rosatom-blue);
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--rosatom-text-light);
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.875rem;
+    font-weight: 300;
+    color: var(--rosatom-text);
+}
+
+/* Быстрые действия */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-card {
+    background-color: white;
+    border: 1px solid var(--rosatom-border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+}
+
+.action-card:hover {
+    border-color: var(--rosatom-blue);
+    transform: translateY(-1px);
+}
+
+.action-title {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--rosatom-text);
+    margin-bottom: 0.25rem;
+}
+
+.action-description {
+    font-size: 0.75rem;
+    color: var(--rosatom-text-light);
+}
+
+/* Последние отчёты */
+.reports-list {
+    margin-top: 1rem;
+}
+
+.report-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--rosatom-border);
+    transition: background-color 0.2s;
+}
+
+.report-item:hover {
+    background-color: var(--rosatom-gray-light);
+}
+
+.report-item:last-child {
+    border-bottom: none;
+}
+
+.report-info {
+    flex: 1;
+}
+
+.report-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--rosatom-text);
+    margin-bottom: 0.25rem;
+}
+
+.report-meta {
+    font-size: 0.75rem;
+    color: var(--rosatom-text-light);
+}
+
+.report-stats {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.report-stat {
+    text-align: center;
+    min-width: 60px;
+}
+
+.report-stat-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--rosatom-text);
+}
+
+.report-stat-label {
+    font-size: 0.7rem;
+    color: var(--rosatom-text-light);
+}
+
+.report-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    color: var(--rosatom-blue);
+    text-decoration: none;
+}
+
+.report-link:hover {
+    text-decoration: underline;
+}
