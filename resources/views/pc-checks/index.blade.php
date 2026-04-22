@@ -72,7 +72,6 @@
             </div>
         @empty
             <div class="empty-state">
-                <div class="empty-icon">🖥️</div>
                 <div class="empty-text">Нет выполненных проверок</div>
                 <a href="{{ route('pc-checks.create') }}" class="btn btn-primary mt-3">Выполнить первую проверку</a>
             </div>

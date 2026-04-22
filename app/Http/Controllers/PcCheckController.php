@@ -45,7 +45,7 @@ class PcCheckController extends Controller
 
         $content = $request->get('software_list');
 
-        // Автоопределение формата
+        // Парсинг списка
         $softwareList = $this->parser->autoParse($content);
 
         if (empty($softwareList)) {
@@ -70,6 +70,7 @@ class PcCheckController extends Controller
         $versionMismatch = 0;
 
         foreach ($softwareList as $software) {
+            // Сравнение с использованием умного поиска
             $comparison = $this->comparisonService->compare(
                 $software['program_name'],
                 $software['version'],
@@ -87,13 +88,14 @@ class PcCheckController extends Controller
                 $illegitimate++;
             }
 
+            // Сохраняем результат
             PcCheckItem::create([
                 'pc_check_id' => $pcCheck->id,
                 'program_name' => $software['program_name'],
-                'version' => $software['version'],
+                'version' => $software['version'] ?: '',
                 'vendor' => $software['vendor'],
                 'normalized_name' => AllowedSoftware::normalizeName($software['program_name']),
-                'version_normalized' => AllowedSoftware::normalizeVersion($software['version']),
+                'version_normalized' => AllowedSoftware::normalizeVersion($software['version'] ?? ''),
                 'status' => $status,
                 'matched_allowed_id' => $matchedId,
                 'match_details' => json_encode($comparison['match_details'], JSON_UNESCAPED_UNICODE)

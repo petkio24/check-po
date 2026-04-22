@@ -7,7 +7,6 @@ class ConsoleListParserService
 {
     /**
      * Парсинг списка ПО из консоли
-     * Формат: "Название программы    Версия"
      */
     public function parse($content)
     {
@@ -18,28 +17,29 @@ class ConsoleListParserService
             $line = trim($line);
             if (empty($line)) continue;
 
-            // Пропускаем заголовки и разделители
-            if (strpos($line, 'Name') !== false ||
-                strpos($line, 'Version') !== false ||
-                strpos($line, '---') !== false ||
-                strpos($line, '====') !== false) {
-                continue;
+            // Пропускаем служебные строки
+            $skipPatterns = [
+                '/^Name/i', '/^Version/i', '/^---/', '/^===/',
+                '/^DisplayName/i', '/^DisplayVersion/i', '/^ProductName/i',
+                '/^------/', '/^======/', '/^PS /', '/^C:/', '/^$/'
+            ];
+
+            $shouldSkip = false;
+            foreach ($skipPatterns as $pattern) {
+                if (preg_match($pattern, $line)) {
+                    $shouldSkip = true;
+                    break;
+                }
             }
 
-            // Разделяем по табуляции или нескольким пробелам
-            $parts = preg_split('/[\t]{2,}|\s{2,}/', $line);
+            if ($shouldSkip) continue;
 
-            if (count($parts) >= 2) {
+            // Разбираем строку
+            $parsed = $this->parseLine($line);
+            if ($parsed && !empty($parsed['name'])) {
                 $softwareList[] = [
-                    'program_name' => trim($parts[0]),
-                    'version' => trim($parts[1]),
-                    'vendor' => null
-                ];
-            } elseif (count($parts) == 1 && !empty($parts[0])) {
-                // Если только название, без версии
-                $softwareList[] = [
-                    'program_name' => trim($parts[0]),
-                    'version' => '',
+                    'program_name' => $parsed['name'],
+                    'version' => $parsed['version'],
                     'vendor' => null
                 ];
             }
@@ -49,46 +49,73 @@ class ConsoleListParserService
     }
 
     /**
-     * Парсинг формата: "Программа - Версия"
+     * Разбор одной строки
      */
-    public function parseWithDash($content)
+    private function parseLine($line)
     {
-        $lines = explode("\n", $content);
-        $softwareList = [];
+        // Способ 1: через табуляцию
+        if (strpos($line, "\t") !== false) {
+            $parts = explode("\t", $line);
+            $parts = array_filter($parts, fn($p) => trim($p) !== '');
+            $parts = array_values($parts);
 
-        foreach ($lines as $line) {
-            $line = trim($line);
-            if (empty($line)) continue;
-
-            if (strpos($line, ' - ') !== false) {
-                $parts = explode(' - ', $line, 2);
-                $softwareList[] = [
-                    'program_name' => trim($parts[0]),
-                    'version' => trim($parts[1] ?? ''),
-                    'vendor' => null
+            if (count($parts) >= 1) {
+                return [
+                    'name' => trim($parts[0]),
+                    'version' => trim($parts[1] ?? '')
                 ];
             }
         }
 
-        return $softwareList;
+        // Способ 2: через 2 и более пробелов
+        if (preg_match('/^(.+?)\s{2,}(.+?)$/', $line, $matches)) {
+            return [
+                'name' => trim($matches[1]),
+                'version' => trim($matches[2])
+            ];
+        }
+
+        // Способ 3: через дефис с пробелами
+        if (strpos($line, ' - ') !== false) {
+            $parts = explode(' - ', $line, 2);
+            return [
+                'name' => trim($parts[0]),
+                'version' => trim($parts[1] ?? '')
+            ];
+        }
+
+        // Способ 4: версия в конце через пробел (версия похожа на числа с точками)
+        if (preg_match('/^(.+?)\s+([\d\.]+(?:\s*\([^)]+\))?(?:\s+[\d\.]+)*)$/', $line, $matches)) {
+            return [
+                'name' => trim($matches[1]),
+                'version' => trim($matches[2])
+            ];
+        }
+
+        // Способ 5: версия в конце через пробел (версия начинается с буквы v)
+        if (preg_match('/^(.+?)\s+(v[\d\.]+.*)$/i', $line, $matches)) {
+            return [
+                'name' => trim($matches[1]),
+                'version' => trim($matches[2])
+            ];
+        }
+
+        // Способ 6: только название
+        if (!empty($line) && strlen($line) < 100) {
+            return [
+                'name' => trim($line),
+                'version' => ''
+            ];
+        }
+
+        return null;
     }
 
     /**
-     * Автоопределение формата и парсинг
+     * Автоопределение формата
      */
     public function autoParse($content)
     {
-        // Пробуем разные форматы
-        $formats = [
-            $this->parse($content),
-            $this->parseWithDash($content)
-        ];
-
-        // Возвращаем тот, который дал больше результатов
-        usort($formats, function($a, $b) {
-            return count($b) - count($a);
-        });
-
-        return $formats[0];
+        return $this->parse($content);
     }
 }

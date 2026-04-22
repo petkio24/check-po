@@ -4,39 +4,94 @@
 namespace App\Services;
 
 use App\Models\AllowedSoftware;
-use App\Models\ReportItem;
-use Illuminate\Support\Collection;
 
 class SoftwareComparisonService
 {
     /**
      * Умное сравнение ПО с разрешённым списком
      */
-    public function compare($programName, $version, $vendor = null)
+    public function compare($programName, $version = null, $vendor = null)
     {
-        $normalizedName = AllowedSoftware::normalizeName($programName);
-        $normalizedVersion = AllowedSoftware::normalizeVersion($version);
-        $versionParts = AllowedSoftware::parseVersion($version);
+        // Очищаем название
+        $programName = trim($programName);
 
-        // Поиск совпадений
-        $matches = $this->findMatches($normalizedName, $normalizedVersion, $vendor);
+        // Если название пустое - возвращаем нелегальное
+        if (empty($programName)) {
+            return [
+                'status' => 'illegitimate',
+                'match_type' => 'not_found',
+                'match_details' => [
+                    'reason' => 'Пустое название программы'
+                ]
+            ];
+        }
 
+        // Используем умный поиск
+        $searchResult = AllowedSoftware::smartSearch($programName, $version);
+        $matches = $searchResult['matches'];
+
+        // Логируем результат поиска
+        \Log::info('Compare result', [
+            'program' => $programName,
+            'version' => $version,
+            'matches_count' => $matches->count(),
+            'matches' => $matches->map(fn($m) => $m->name . ' ' . $m->version)->toArray()
+        ]);
+
+        // Если совпадений нет - нелегальное ПО
         if ($matches->isEmpty()) {
             return [
                 'status' => 'illegitimate',
                 'match_type' => 'not_found',
                 'match_details' => [
                     'reason' => 'Программа не найдена в разрешённом списке',
-                    'suggestions' => $this->findSimilar($normalizedName)
+                    'searched_name' => $programName,
+                    'searched_version' => $version
                 ]
             ];
         }
 
-        // Проверка точного совпадения версии
-        $exactMatch = $matches->first(function ($match) use ($normalizedVersion) {
-            return $match->version_normalized === $normalizedVersion;
-        });
+        // Получаем версию для сравнения
+        $searchVersion = $version ?: $searchResult['extracted_version'];
+        $normalizedSearchVersion = !empty($searchVersion) ? AllowedSoftware::normalizeVersion($searchVersion) : null;
 
+        // Перебираем все совпадения
+        $exactMatch = null;
+        $versionMismatchMatch = null;
+        $anyMatch = null;
+
+        foreach ($matches as $match) {
+            $matchVersionNorm = $match->version_normalized;
+
+            // Сохраняем первый матч как любой
+            if (!$anyMatch) {
+                $anyMatch = $match;
+            }
+
+            // Если у проверяемого ПО нет версии
+            if (empty($normalizedSearchVersion) || $normalizedSearchVersion === '0.0.0.0') {
+                // Если у разрешённого ПО нет версии - разрешено
+                if (empty($matchVersionNorm) || $matchVersionNorm === '0.0.0.0') {
+                    $exactMatch = $match;
+                    break;
+                }
+                // Если версия указана в разрешённом - пропускаем
+                continue;
+            }
+
+            // Сравниваем версии
+            if ($matchVersionNorm === $normalizedSearchVersion) {
+                $exactMatch = $match;
+                break;
+            }
+
+            // Сохраняем как несовпадение версии
+            if (!$versionMismatchMatch && !empty($matchVersionNorm) && $matchVersionNorm !== '0.0.0.0') {
+                $versionMismatchMatch = $match;
+            }
+        }
+
+        // Точное совпадение (название + версия)
         if ($exactMatch) {
             return [
                 'status' => 'legitimate',
@@ -44,29 +99,38 @@ class SoftwareComparisonService
                 'match_details' => [
                     'matched_id' => $exactMatch->id,
                     'matched_name' => $exactMatch->name,
-                    'matched_version' => $exactMatch->version,
+                    'matched_version' => $exactMatch->version ?: 'любая',
                     'confidence' => 100
                 ]
             ];
         }
 
-        // Проверка на несовпадение версии
-        $nameMatch = $matches->first();
-        if ($nameMatch) {
-            $versionDiff = $this->compareVersions($versionParts, $nameMatch->version_parts);
-
+        // Несовпадение версии
+        if ($versionMismatchMatch) {
             return [
                 'status' => 'version_mismatch',
                 'match_type' => 'version_mismatch',
                 'match_details' => [
-                    'matched_id' => $nameMatch->id,
-                    'matched_name' => $nameMatch->name,
-                    'expected_version' => $nameMatch->version,
-                    'actual_version' => $version,
-                    'version_difference' => $versionDiff,
-                    'is_newer' => $this->isNewerVersion($versionParts, $nameMatch->version_parts),
-                    'is_older' => $this->isOlderVersion($versionParts, $nameMatch->version_parts),
-                    'confidence' => 80
+                    'matched_id' => $versionMismatchMatch->id,
+                    'matched_name' => $versionMismatchMatch->name,
+                    'expected_version' => $versionMismatchMatch->version ?: 'не указана',
+                    'actual_version' => $searchVersion ?: 'не указана',
+                    'confidence' => 50
+                ]
+            ];
+        }
+
+        // Совпадение только по названию (без версии)
+        if ($anyMatch) {
+            return [
+                'status' => 'legitimate',
+                'match_type' => 'name_only',
+                'match_details' => [
+                    'matched_id' => $anyMatch->id,
+                    'matched_name' => $anyMatch->name,
+                    'matched_version' => $anyMatch->version ?: 'любая',
+                    'note' => 'Версия не указана в разрешённом списке',
+                    'confidence' => 85
                 ]
             ];
         }
@@ -74,61 +138,12 @@ class SoftwareComparisonService
         return [
             'status' => 'illegitimate',
             'match_type' => 'not_found',
-            'match_details' => ['reason' => 'Совпадение не найдено']
+            'match_details' => [
+                'reason' => 'Программа не найдена в разрешённом списке',
+                'searched_name' => $programName,
+                'searched_version' => $version
+            ]
         ];
-    }
-
-    /**
-     * Поиск совпадений в разрешённом списке
-     */
-    private function findMatches($normalizedName, $normalizedVersion, $vendor = null)
-    {
-        $query = AllowedSoftware::where('is_active', true)
-            ->where('normalized_name', $normalizedName);
-
-        if ($vendor) {
-            $query->where(function ($q) use ($vendor) {
-                $q->where('vendor', $vendor)
-                    ->orWhereNull('vendor');
-            });
-        }
-
-        return $query->get();
-    }
-
-    /**
-     * Поиск похожих программ (для предложений)
-     */
-    private function findSimilar($normalizedName)
-    {
-        return AllowedSoftware::where('normalized_name', 'like', '%' . $normalizedName . '%')
-            ->orWhere('normalized_name', 'like', $normalizedName . '%')
-            ->limit(5)
-            ->get()
-            ->map(function ($item) {
-                return $item->name . ' ' . $item->version;
-            })
-            ->toArray();
-    }
-
-    /**
-     * Сравнение версий
-     */
-    private function compareVersions($actual, $expected)
-    {
-        $diff = [];
-
-        if ($actual['major'] != $expected['major']) {
-            $diff['major'] = $actual['major'] - $expected['major'];
-        }
-        if ($actual['minor'] != $expected['minor']) {
-            $diff['minor'] = $actual['minor'] - $expected['minor'];
-        }
-        if ($actual['patch'] != $expected['patch']) {
-            $diff['patch'] = $actual['patch'] - $expected['patch'];
-        }
-
-        return $diff;
     }
 
     /**
@@ -139,7 +154,6 @@ class SoftwareComparisonService
         if ($actual['major'] > $expected['major']) return true;
         if ($actual['major'] == $expected['major'] && $actual['minor'] > $expected['minor']) return true;
         if ($actual['major'] == $expected['major'] && $actual['minor'] == $expected['minor'] && $actual['patch'] > $expected['patch']) return true;
-
         return false;
     }
 
@@ -151,7 +165,6 @@ class SoftwareComparisonService
         if ($actual['major'] < $expected['major']) return true;
         if ($actual['major'] == $expected['major'] && $actual['minor'] < $expected['minor']) return true;
         if ($actual['major'] == $expected['major'] && $actual['minor'] == $expected['minor'] && $actual['patch'] < $expected['patch']) return true;
-
         return false;
     }
 }

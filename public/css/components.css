@@ -775,3 +775,300 @@
     border-color: #e53e3e;
     box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
 }
+
+/* public/css/components.css - обновляем стили таблицы */
+
+/* Таблицы - фиксированная ширина */
+.table-container {
+    overflow-x: auto;
+    border: 2px solid var(--rosatom-border);
+    border-radius: 8px;
+    background: white;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+    table-layout: fixed; /* Фиксированная ширина столбцов */
+}
+
+.table th,
+.table td {
+    padding: 0.875rem 1rem;
+    border-bottom: 1px solid var(--rosatom-border);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Ширина столбцов для реестра ПО */
+.table th:nth-child(1),
+.table td:nth-child(1) {
+    width: 35%; /* Название */
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 20%; /* Версия */
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    width: 25%; /* Поставщик */
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    width: 10%; /* Дата добавления */
+}
+
+.table th:nth-child(5),
+.table td:nth-child(5) {
+    width: 10%; /* Статус */
+}
+
+.table th:nth-child(6),
+.table td:nth-child(6) {
+    width: 10%; /* Действия */
+}
+
+.table th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--rosatom-text);
+    background: #f7fafc;
+    border-bottom: 2px solid var(--rosatom-border);
+}
+
+.table tr:hover {
+    background: #f7fafc;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .table th,
+    .table td {
+        padding: 0.625rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .table th:nth-child(1),
+    .table td:nth-child(1) {
+        width: 40%;
+    }
+
+    .table th:nth-child(2),
+    .table td:nth-child(2) {
+        width: 20%;
+    }
+
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        width: 20%;
+    }
+
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        width: 20%;
+    }
+
+    .table th:nth-child(5),
+    .table td:nth-child(5) {
+        width: 10%;
+    }
+
+    .table th:nth-child(6),
+    .table td:nth-child(6) {
+        width: 10%;
+    }
+}
+
+@media (max-width: 640px) {
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        display: none; /* Скрываем дату на очень маленьких экранах */
+    }
+}
+
+/* public/css/components.css - добавить */
+
+.software-name-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    word-break: break-word;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.action-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.action-btn.edit:hover {
+    background: #ebf8ff;
+    color: #3182ce;
+}
+
+.action-btn.delete:hover {
+    background: #fff5f5;
+    color: #e53e3e;
+}
+
+.badge-neutral {
+    background: #edf2f7;
+    color: #4a5568;
+}
+
+/* public/css/components.css - упрощённая таблица */
+
+/* Таблицы - простая версия */
+.table-container {
+    overflow-x: auto;
+    border: 2px solid var(--rosatom-border);
+    border-radius: 8px;
+    background: white;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+    min-width: 600px;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--rosatom-border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.table th {
+    font-weight: 600;
+    color: var(--rosatom-text);
+    background: #f7fafc;
+    border-bottom: 2px solid var(--rosatom-border);
+    white-space: nowrap;
+}
+
+.table td {
+    white-space: normal;
+    word-break: break-word;
+}
+
+.table tr:hover {
+    background: #f7fafc;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Кнопки действий */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.action-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+}
+
+.action-btn.edit:hover {
+    background: #ebf8ff;
+    color: #3182ce;
+}
+
+.action-btn.delete:hover {
+    background: #fff5f5;
+    color: #e53e3e;
+}
+
+/* Баджи */
+.badge {
+    display: inline-flex;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.badge-success {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.badge-neutral {
+    background: #edf2f7;
+    color: #4a5568;
+}
+
+/* public/css/components.css - добавить */
+
+.filters-panel {
+    background: white;
+    border: 2px solid var(--rosatom-border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.filters-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-search {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--rosatom-border);
+    border-radius: 6px;
+    font-size: 0.875rem;
+}
+
+.filter-search:focus {
+    outline: none;
+    border-color: var(--rosatom-blue);
+}
+
+.filter-select {
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--rosatom-border);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    background: white;
+    cursor: pointer;
+}

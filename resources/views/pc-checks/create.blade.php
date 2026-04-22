@@ -51,7 +51,6 @@
                 <div class="card-title">Список программ</div>
 
                 <div class="info-note">
-                    <div class="info-note-icon">i</div>
                     <div class="info-note-text">
                         Формат списка определяется автоматически. Поддерживаются форматы: <strong>Название    Версия</strong> (через пробелы или табуляцию) или <strong>Название - Версия</strong>
                     </div>
