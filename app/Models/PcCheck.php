@@ -11,7 +11,7 @@ class PcCheck extends Model
     use HasFactory;
 
     protected $fillable = [
-        'pc_name', 'pc_ip', 'check_file_name', 'total_software',
+        'check_name', 'pc_name', 'pc_ip', 'check_file_name', 'total_software',
         'legitimate_count', 'illegitimate_count', 'version_mismatch_count', 'results'
     ];
 

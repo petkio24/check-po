@@ -21,7 +21,3 @@ Route::get('pc-checks/{pcCheck}/export', [PcCheckController::class, 'export'])->
 Route::resource('allowed-software', AllowedSoftwareController::class);
 Route::post('allowed-software/import', [AllowedSoftwareController::class, 'import'])->name('allowed-software.import');
 Route::post('allowed-software/check-similar', [AllowedSoftwareController::class, 'checkSimilar'])->name('allowed-software.check-similar');
-
-// Отчёты
-Route::resource('reports', ReportController::class);
-Route::get('reports/{report}/export', [ReportController::class, 'export'])->name('reports.export');

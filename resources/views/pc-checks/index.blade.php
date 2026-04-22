@@ -22,18 +22,15 @@
         @forelse($checks as $check)
             <div class="check-card">
                 <div class="check-header">
-                    <div class="check-info">
-                        <div class="check-title">
-                            @if($check->pc_name)
-                                {{ $check->pc_name }}
-                            @else
-                                Проверка #{{ $check->id }}
-                            @endif
-                        </div>
+                    <div>
+                        <div class="check-title">{{ $check->check_name }}</div>
                         <div class="check-meta">
-                            <span>{{ $check->created_at->format('d.m.Y H:i:s') }}</span>
+                            {{ $check->created_at->format('d.m.Y H:i:s') }}
+                            @if($check->pc_name)
+                                • {{ $check->pc_name }}
+                            @endif
                             @if($check->pc_ip)
-                                <span>• {{ $check->pc_ip }}</span>
+                                • {{ $check->pc_ip }}
                             @endif
                         </div>
                     </div>

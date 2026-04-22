@@ -682,3 +682,64 @@
     padding: 0.625rem 1.5rem;
     font-size: 0.875rem;
 }
+
+.summary-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Пагинация */
+.pagination-container {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.pagination {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination li {
+    display: inline-block;
+}
+
+.pagination a,
+.pagination span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 0.5rem;
+    font-size: 0.875rem;
+    color: #4a5568;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.pagination a:hover {
+    background: #f7fafc;
+    border-color: #cbd5e0;
+}
+
+.pagination .active span {
+    background: #1e3a5f;
+    color: white;
+    border-color: #1e3a5f;
+}
+
+.pagination .disabled span {
+    color: #cbd5e0;
+    background: #f7fafc;
+    cursor: not-allowed;
+}

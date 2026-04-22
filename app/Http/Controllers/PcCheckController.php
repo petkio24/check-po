@@ -38,6 +38,7 @@ class PcCheckController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'check_name' => 'required|string|max:255',
             'software_list' => 'required|string',
             'pc_name' => 'nullable|string|max:255',
             'pc_ip' => 'nullable|ip',
@@ -62,12 +63,13 @@ class PcCheckController extends Controller
 
         // Создание записи проверки
         $pcCheck = PcCheck::create([
+            'check_name' => $request->get('check_name'),
             'pc_name' => $request->get('pc_name'),
             'pc_ip' => $request->get('pc_ip'),
             'check_file_name' => 'Ручной ввод',
             'total_software' => count($softwareList),
             'legitimate_count' => 0,
-            'illegitimate_count' => 0,
+            'illegitimate_count'  => 0,
             'version_mismatch_count' => 0
         ]);
 

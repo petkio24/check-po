@@ -11,9 +11,10 @@ return new class extends Migration
     {
         Schema::create('pc_checks', function (Blueprint $table) {
             $table->id();
+            $table->string('check_name');
             $table->string('pc_name')->nullable();
             $table->string('pc_ip')->nullable();
-            $table->string('check_file_name');
+            $table->string('check_file_name')->nullable();
             $table->integer('total_software')->default(0);
             $table->integer('legitimate_count')->default(0);
             $table->integer('illegitimate_count')->default(0);

@@ -6,7 +6,7 @@
 @section('content')
     <div class="page-header">
         <div>
-            <h1 class="page-title">Результат проверки</h1>
+            <h1 class="page-title">{{ $pcCheck->check_name }}</h1>
             <p class="page-subtitle">
                 @if($pcCheck->pc_name)
                     ПК: {{ $pcCheck->pc_name }}

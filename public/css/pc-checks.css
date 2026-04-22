@@ -410,3 +410,49 @@
     display: flex;
     gap: 0.75rem;
 }
+
+.summary-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.summary-card.legitimate,
+.summary-card.warning,
+.summary-card.danger {
+    border: 1px solid #e2e8f0;
+}
+
+/* Статистика в карточке проверки */
+.check-stats .stat.legitimate .stat-value {
+    color: #48bb78;
+}
+
+.check-stats .stat.warning .stat-value {
+    color: #ed8936;
+}
+
+.check-stats .stat.danger .stat-value {
+    color: #f56565;
+}
+
+/* Прогресс-бар без лишних бордеров */
+.compliance-bar {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Пагинация на странице результатов */
+.pagination-container {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
