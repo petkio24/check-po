@@ -1,4 +1,4 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,6 @@
 </head>
 <body>
 <div class="app-container">
-    <!-- Header исправленный -->
     <header class="app-header">
         <div class="app-header-inner">
             <div class="logo">
@@ -26,6 +25,16 @@
                     <div class="logo-subtitle">Система контроля лицензионного программного обеспечения</div>
                 </div>
             </div>
+
+            @auth
+                <div class="user-menu">
+                    <span class="user-name">{{ Auth::user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                        @csrf
+                        <button type="submit" class="logout-btn">Выход</button>
+                    </form>
+                </div>
+            @endauth
         </div>
     </header>
 
@@ -65,6 +74,39 @@
         @yield('content')
     </main>
 </div>
+
+<style>
+    .user-menu {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .user-name {
+        color: #e0e0e0;
+        font-size: 14px;
+    }
+
+    .logout-form {
+        margin: 0;
+    }
+
+    .logout-btn {
+        background: #dc3545;
+        border: none;
+        color: white;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-size: 13px;
+        cursor: pointer;
+        font-family: inherit;
+        transition: background 0.2s;
+    }
+
+    .logout-btn:hover {
+        background: #c82333;
+    }
+</style>
 
 @vite(['resources/js/app.js'])
 @stack('scripts')

@@ -13,6 +13,7 @@ class AllowedSoftwareController extends Controller
     public function __construct(SoftwareComparisonService $comparisonService)
     {
         $this->comparisonService = $comparisonService;
+        $this->middleware('auth');
     }
 
     /**

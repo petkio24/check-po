@@ -20,6 +20,7 @@ class PcCheckController extends Controller
     ) {
         $this->parser = $parser;
         $this->comparisonService = $comparisonService;
+        $this->middleware('auth');
     }
 
     public function index()
